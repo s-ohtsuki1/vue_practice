@@ -1,0 +1,11 @@
+.DS_Store
+Thumbs.db
+.vscode/*
+
+/*.txt
+/app/*
+/mysql/db/*
+/mysql/db_dump/*
+/phpmyadmin/sessions/*
+/shared/logs/*
+!.gitkeep
