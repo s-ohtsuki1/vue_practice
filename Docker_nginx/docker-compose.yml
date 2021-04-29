@@ -17,6 +17,10 @@ services:
       - ./shared/logs/mysql:/var/log/mysql
     ports:
       - "3306:3306"
+  mail:
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
