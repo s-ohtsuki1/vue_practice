@@ -9,6 +9,10 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cookie;
+
 class RegisterController extends Controller
 {
     /*
@@ -64,10 +68,23 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $token = $this->generateApiTokenAndSetCookie();
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'api_token' => hash('sha256', $token),
         ]);
+    }
+
+    public function generateApiTokenAndSetCookie()
+    {
+        $token = Str::random(80);
+
+        $encryptToken = Crypt::encrypt($token);
+        Cookie::queue(Cookie::forget('api_token'));
+        Cookie::queue('api_token', $encryptToken, '10000000');
+
+        return $token;
     }
 }
